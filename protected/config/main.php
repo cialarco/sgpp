@@ -140,7 +140,7 @@ return array(
 			'connectionString' => 'mysql:host=localhost;dbname=NEW_SGPP',
 			'emulatePrepare' => true,
 			'username' => 'root',
-			'password' => '',
+			'password' => 'mysqlarchlinux',
 			'charset' => 'utf8',
 		),
 		

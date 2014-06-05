@@ -73,15 +73,15 @@ class Empresa extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'EMP_RUT' => 'Emp Rut',
-			'COM_ID' => 'Com',
-			'EMP_NOMBRE' => 'Emp Nombre',
-			'EMP_DIRECCION' => 'Emp Direccion',
-			'EMP_TELEFONO' => 'Emp Telefono',
-			'EMP_CELULAR' => 'Emp Celular',
-			'EMP_DESCRIPCION' => 'Emp Descripcion',
-			'EMP_EMAIL' => 'Emp Email',
-			'EMP_WEB' => 'Emp Web',
+			'EMP_RUT' => 'RUT',
+			'COM_ID' => 'Comuna',
+			'EMP_NOMBRE' => 'Nombre de la Empresa',
+			'EMP_DIRECCION' => 'Dirección',
+			'EMP_TELEFONO' => 'Fono',
+			'EMP_CELULAR' => 'Fono-Móvil',
+			'EMP_DESCRIPCION' => 'Descripción',
+			'EMP_EMAIL' => 'EMAIL Empresarial',
+			'EMP_WEB' => 'WEB Empresarial',
 		);
 	}
 
