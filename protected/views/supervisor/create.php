@@ -2,10 +2,7 @@
 /* @var $this SupervisorController */
 /* @var $model Supervisor */
 
-$this->breadcrumbs=array(
-	'Supervisors'=>array('index'),
-	'Create',
-);
+
 
 $this->menu=array(
 	array('label'=>'Historial de Supervisores', 'url'=>array('index')),

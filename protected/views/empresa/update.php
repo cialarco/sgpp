@@ -2,17 +2,12 @@
 /* @var $this EmpresaController */
 /* @var $model Empresa */
 
-$this->breadcrumbs=array(
-	'Empresas'=>array('index'),
-	$model->EMP_RUT=>array('view','id'=>$model->EMP_RUT),
-	'Update',
-);
 
 $this->menu=array(
-	array('label'=>'List Empresa', 'url'=>array('index')),
-	array('label'=>'Create Empresa', 'url'=>array('create')),
-	array('label'=>'View Empresa', 'url'=>array('view', 'id'=>$model->EMP_RUT)),
-	array('label'=>'Manage Empresa', 'url'=>array('admin')),
+	//array('label'=>'List Empresa', 'url'=>array('index')),
+	array('label'=>'Crear Empresa', 'url'=>array('create')),
+	array('label'=>'Detalle Empresa', 'url'=>array('view', 'id'=>$model->EMP_RUT)),
+	array('label'=>'Administrar Empresas', 'url'=>array('admin')),
 );
 ?>
 

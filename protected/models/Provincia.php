@@ -58,7 +58,7 @@ class Provincia extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'PRO_ID' => 'Pro',
+			'PRO_ID' => 'Provincia',
 			'REG_ID' => 'Reg',
 			'PRO_NOMBRE' => 'Pro Nombre',
 		);

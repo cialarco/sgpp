@@ -38,13 +38,17 @@ class Empresa extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+
+			array('EMP_RUT, COM_ID, EMP_NOMBRE, EMP_DIRECCION, EMP_TELEFONO, EMP_CELULAR, EMP_EMAIL', 'required'),
 			array('EMP_RUT', 'required'),
+			array('EMP_RUT','ECompositeUniqueValidator','attributesToAddError'=>'EMP_RUT',
+            'message'=>'Este RUT ya se encuentra registrado'),
 			array('COM_ID', 'numerical', 'integerOnly'=>true),
 			array('EMP_RUT', 'length', 'max'=>13),
 			array('EMP_NOMBRE, EMP_DESCRIPCION', 'length', 'max'=>100),
 			array('EMP_DIRECCION, EMP_WEB', 'length', 'max'=>50),
 			array('EMP_TELEFONO', 'length', 'max'=>15),
-			array('EMP_CELULAR', 'length', 'max'=>11),
+			array('EMP_CELULAR', 'length', 'max'=>12),
 			array('EMP_EMAIL', 'length', 'max'=>30),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

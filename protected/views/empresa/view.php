@@ -2,10 +2,6 @@
 /* @var $this EmpresaController */
 /* @var $model Empresa */
 
-$this->breadcrumbs=array(
-	'Empresas'=>array('index'),
-	$model->EMP_RUT,
-);
 
 $this->menu=array(
 	array('label'=>'List Empresa', 'url'=>array('index')),
@@ -16,15 +12,17 @@ $this->menu=array(
 );
 ?>
 
-<h1>View Empresa #<?php echo $model->EMP_RUT; ?></h1>
+<h1>Detalle Empresa: <?php echo $model->EMP_NOMBRE; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
-		'EMP_RUT',
-		'COM_ID',
+		'EMP_RUT',		
 		'EMP_NOMBRE',
 		'EMP_DIRECCION',
+		array('name'=>'COM_ID',
+			 'value'=>$model->cOM->COM_NOMBRE,			 
+		),
 		'EMP_TELEFONO',
 		'EMP_CELULAR',
 		'EMP_DESCRIPCION',

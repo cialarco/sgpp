@@ -7,11 +7,7 @@
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('EMP_RUT')); ?>:</b>
 	<?php echo CHtml::link(CHtml::encode($data->EMP_RUT), array('view', 'id'=>$data->EMP_RUT)); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('COM_ID')); ?>:</b>
-	<?php echo CHtml::encode($data->COM_ID); ?>
-	<br />
+	<br />	
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('EMP_NOMBRE')); ?>:</b>
 	<?php echo CHtml::encode($data->EMP_NOMBRE); ?>
@@ -19,6 +15,10 @@
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('EMP_DIRECCION')); ?>:</b>
 	<?php echo CHtml::encode($data->EMP_DIRECCION); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('COM_ID')); ?>:</b>
+	<?php echo CHtml::encode($data->cOM->COM_NOMBRE); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('EMP_TELEFONO')); ?>:</b>

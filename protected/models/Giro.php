@@ -60,7 +60,7 @@ class Giro extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'GIR_ID' => 'Gir',
+			'GIR_ID' => 'Giro',
 			'RUB_ID' => 'Rub',
 			'GIR_CODIGO' => 'Gir Codigo',
 			'GIR_NOMBRE' => 'Gir Nombre',

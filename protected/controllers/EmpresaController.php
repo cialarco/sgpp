@@ -27,21 +27,21 @@ class EmpresaController extends Controller
 	public function accessRules()
 	{
 		return array(
-			/*array('allow',  // allow all users to perform 'index' and 'view' actions
+			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view'),
-				'users'=>array('*'),
+				'users'=>array(''),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('create','update'),
-				'users'=>array('@'),
+				'users'=>array(''),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
+				'users'=>array(''),
 			),
 			array('deny',  // deny all users
-				'users'=>array('*'),
-			),*/
+				'users'=>array(''),
+			),
 		);
 	}
 
@@ -63,19 +63,37 @@ class EmpresaController extends Controller
 	public function actionCreate()
 	{
 		$model=new Empresa;
+		$modelRubro = new Rubro();
+		$modelGiro = new Giro();
+		$modelReg = new Region();
+		$modelProv = new Provincia();
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Empresa']))
+		if(isset($_POST['Empresa'], $_POST['Rubro'], $_POST['Giro'], $_POST['Region'], $_POST['Giro']))
 		{
 			$model->attributes=$_POST['Empresa'];
+			$modelRubro->attributes=$_POST['Rubro'];
+			$modelGiro->attributes=$_POST['Giro'];
+			$modelReg->attributes=$_POST['Region'];
+			$modelProv->attributes=$_POST['Provincia'];
+
+			$modelRubro->validate();
+			$modelGiro->validate();
+			$modelReg->validate();
+			$modelProv->validate();
+
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->EMP_RUT));
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
+			'modelRubro'=>$modelRubro,
+			'modelGiro'=>$modelGiro,
+			'modelReg'=>$modelReg,
+			'modelProv'=>$modelProv,
 		));
 	}
 
@@ -86,12 +104,23 @@ class EmpresaController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
+		//$model=$this->loadModel($id);
+		$model=new Empresa;
+		$modelRubro = new Rubro();
+		$modelGiro = new Giro();
+		$modelReg = new Region();
+		$modelProv = new Provincia();
+		$id = $_GET['id'];
+		$model=Empresa::model()->findByPk($id);
+		//$modelRubro->attributes=$_POST['Rubro'];
+		//$modelGiro->attributes=$_POST['Giro'];
+		//$modelReg->attributes=$_POST['Region'];
+		//$modelProv->attributes=$_POST['Provincia'];
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Empresa']))
+		if(isset($_POST['Empresa'], $_POST['Rubro'], $_POST['Giro'], $_POST['Region'], $_POST['Giro']))
 		{
 			$model->attributes=$_POST['Empresa'];
 			if($model->save())
@@ -100,6 +129,10 @@ class EmpresaController extends Controller
 
 		$this->render('update',array(
 			'model'=>$model,
+			'modelRubro'=>$modelRubro,
+			'modelGiro'=>$modelGiro,
+			'modelReg'=>$modelReg,
+			'modelProv'=>$modelProv,
 		));
 	}
 
@@ -169,5 +202,59 @@ class EmpresaController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+
+
+
+
+
+
+	public function actionselect_reg()
+	{
+
+		$id_uno =  $_POST['Region']['REG_ID'];
+		$lista =  Provincia::model()->findAll('REG_ID = :id_uno',array(':id_uno'=>$id_uno));
+		//$lista =  Provincia::model()->findAll('PRO_ID=? ', array($_POST['Empresa']['PRO_ID']));
+		$lista = CHtml::listData($lista,'PRO_ID','PRO_NOMBRE');
+
+			echo CHtml::tag('option', array('value' => ''), 'Seleccione Provincia...', true);
+
+	          
+            foreach ($lista as $valor => $PRO_ID){
+                echo CHtml::tag('option',array('value'=>$valor),CHtml::encode($PRO_ID), true );
+	    }
+	}
+
+
+	public function actionselect_pro()
+	{
+
+		$id_uno =  $_POST['Provincia']['PRO_ID'];
+		$lista =  Comuna::model()->findAll('PRO_ID = :id_uno',array(':id_uno'=>$id_uno));
+		//$lista =  Comuna::model()->findAll('PRO_ID=? ', array($_POST['Empresa']['PRO_ID']));
+		$lista = CHtml::listData($lista,'COM_ID','COM_NOMBRE');
+
+			echo CHtml::tag('option', array('value' => ''), 'Seleccione Comuna...', true);
+
+	          
+            foreach ($lista as $valor => $COM_ID){
+                echo CHtml::tag('option',array('value'=>$valor),CHtml::encode($COM_ID), true );
+	    }
+	}
+
+	public function actionselect_rub()
+	{
+
+		$id_uno =  $_POST['Rubro']['RUB_ID'];
+		$lista =  Giro::model()->findAll('RUB_ID = :id_uno',array(':id_uno'=>$id_uno));
+		//$lista =  Comuna::model()->findAll('PRO_ID=? ', array($_POST['Empresa']['PRO_ID']));
+		$lista = CHtml::listData($lista,'GIR_ID','GIR_NOMBRE');
+
+			echo CHtml::tag('option', array('value' => ''), 'Seleccione Giro...', true);
+
+	          
+            foreach ($lista as $valor => $GIR_ID){
+                echo CHtml::tag('option',array('value'=>$valor),CHtml::encode($GIR_ID), true );
+	    }
 	}
 }

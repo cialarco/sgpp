@@ -60,10 +60,10 @@ class Region extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'REG_ID' => 'Reg',
-			'PAIS_ID' => 'Pais',
-			'REG_NOMBRE' => 'Reg Nombre',
-			'REG_SIMBOLO' => 'Reg Simbolo',
+			'REG_ID' => 'Región',
+			'PAIS_ID' => 'País',
+			'REG_NOMBRE' => 'Nombre Región',
+			'REG_SIMBOLO' => 'Símbolo',
 		);
 	}
 

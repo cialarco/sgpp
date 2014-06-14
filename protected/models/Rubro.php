@@ -55,7 +55,7 @@ class Rubro extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'RUB_ID' => 'Rub',
+			'RUB_ID' => 'Rubro',
 			'RUB_NOMBRE' => 'Rub Nombre',
 			'RUB_PADRE' => 'Rub Padre',
 		);

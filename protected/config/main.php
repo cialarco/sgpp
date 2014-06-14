@@ -127,7 +127,11 @@ return array(
 			'rules'=>array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
-				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',				
+				'<controller:\w+>/<action:\w+>/<id:\S+>'=>'<controller>/<action>',
+				'<controller:\w+>/<id:\S+>'=>'<controller>/view',
+				//'<controller:empresa>/<action:\w+>/<id:\S+>'=>'empresa/<action>',
+				//'<controller:empresa>/<id:\S+>'=>'empresa/view',
 			),
 		),
 		
