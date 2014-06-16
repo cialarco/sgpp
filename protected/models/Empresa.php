@@ -39,11 +39,12 @@ class Empresa extends CActiveRecord
 		// will receive user inputs.
 		return array(
 
-			array('EMP_RUT, COM_ID, EMP_NOMBRE, EMP_DIRECCION, EMP_TELEFONO, EMP_CELULAR, EMP_EMAIL', 'required'),
+			array('EMP_RUT, EMP_NOMBRE, EMP_DIRECCION, EMP_TELEFONO, EMP_CELULAR, EMP_EMAIL', 'required'),
 			array('EMP_RUT', 'required'),
+			array('COM_ID', 'required', 'message'=>'Debe seleccionar una Comuna'),
 			array('EMP_RUT','ECompositeUniqueValidator','attributesToAddError'=>'EMP_RUT',
             'message'=>'Este RUT ya se encuentra registrado'),
-			array('COM_ID', 'numerical', 'integerOnly'=>true),
+			array('COM_ID', 'numerical', 'integerOnly'=>true, 'message'=>'Debe seleccionar una Comuna'),
 			array('EMP_RUT', 'length', 'max'=>13),
 			array('EMP_NOMBRE, EMP_DESCRIPCION', 'length', 'max'=>100),
 			array('EMP_DIRECCION, EMP_WEB', 'length', 'max'=>50),

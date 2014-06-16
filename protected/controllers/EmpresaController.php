@@ -50,9 +50,23 @@ class EmpresaController extends Controller
 	 * @param integer $id the ID of the model to be displayed
 	 */
 	public function actionView($id)
-	{
+	{	
+		$model=$this->loadModel($id);
+
+
+		$modelComuna = Comuna::model()->find('COM_ID = :id_uno',array(':id_uno'=>$model->COM_ID));
+		$modelProv = Provincia::model()->find('PRO_ID = :id_uno',array(':id_uno'=>$modelComuna->PRO_ID));
+		$modelReg = Region::model()->find('REG_ID = :id_uno',array(':id_uno'=>$modelProv->REG_ID));
+		$modelGiroEmpresas = GiroEmpresas::model()->find('EMP_RUT = :id_uno',array(':id_uno'=>$model->EMP_RUT));
+		$modelGiro = Giro::model()->find('GIR_ID = :id_uno',array(':id_uno'=>$modelGiroEmpresas->GIR_ID));
+		$modelRubro = Rubro::model()->find('RUB_ID = :id_uno',array(':id_uno'=>$modelGiro->RUB_ID));
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+			'modelGiroEmpresas'=>$modelGiroEmpresas,
+			'modelRubro'=>$modelRubro,
+			'modelGiro'=>$modelGiro,
+			'modelReg'=>$modelReg,
+			'modelProv'=>$modelProv,
 		));
 	}
 
@@ -71,7 +85,7 @@ class EmpresaController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Empresa'], $_POST['Rubro'], $_POST['Giro'], $_POST['Region'], $_POST['Giro']))
+		if(isset($_POST['Empresa'], $_POST['Rubro'], $_POST['Giro'], $_POST['Region'], $_POST['Provincia']))
 		{
 			$model->attributes=$_POST['Empresa'];
 			$modelRubro->attributes=$_POST['Rubro'];
@@ -79,13 +93,29 @@ class EmpresaController extends Controller
 			$modelReg->attributes=$_POST['Region'];
 			$modelProv->attributes=$_POST['Provincia'];
 
-			$modelRubro->validate();
-			$modelGiro->validate();
-			$modelReg->validate();
-			$modelProv->validate();
+			$model->validate();
+			$validar = $modelRubro->validate();
+			$validar = $modelGiro->validate() && $validar;
+			$validar = $modelReg->validate() && $validar;
+			$validar = $modelProv->validate() && $validar;
+			$modelGiroEmpresas = new GiroEmpresas();
+			$modelGiroEmpresas->EMP_RUT = $model->EMP_RUT;
+			$modelGiroEmpresas->GIR_ID = $modelGiro->GIR_ID;
 
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->EMP_RUT));
+			if(($modelGiro->GIR_ID != NULL) && ($modelRubro->RUB_ID != NULL) && 
+				($modelReg->REG_ID != NULL) && ($modelProv->PRO_ID != NULL)){
+
+					if($model->save()){
+					//$model->save(flase);	
+					$modelGiroEmpresas->save(false);
+									
+					$this->redirect(array('view','id'=>$model->EMP_RUT));
+					}
+			
+			}
+
+			
+			
 		}
 
 		$this->render('create',array(
@@ -104,27 +134,55 @@ class EmpresaController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		//$model=$this->loadModel($id);
-		$model=new Empresa;
+		$model=$this->loadModel($id);
+		//$model=new Empresa;
 		$modelRubro = new Rubro();
 		$modelGiro = new Giro();
 		$modelReg = new Region();
 		$modelProv = new Provincia();
-		$id = $_GET['id'];
-		$model=Empresa::model()->findByPk($id);
-		//$modelRubro->attributes=$_POST['Rubro'];
-		//$modelGiro->attributes=$_POST['Giro'];
-		//$modelReg->attributes=$_POST['Region'];
-		//$modelProv->attributes=$_POST['Provincia'];
+		$modelComuna = new Comuna();
+		$modelGiroEmpresas = new GiroEmpresas();
 
+		
+		$modelComuna = Comuna::model()->find('COM_ID = :id_uno',array(':id_uno'=>$model->COM_ID));
+		$modelProv = Provincia::model()->find('PRO_ID = :id_uno',array(':id_uno'=>$modelComuna->PRO_ID));
+		$modelReg = Region::model()->find('REG_ID = :id_uno',array(':id_uno'=>$modelProv->REG_ID));
+		$modelGiroEmpresas = GiroEmpresas::model()->find('EMP_RUT = :id_uno',array(':id_uno'=>$model->EMP_RUT));
+		$modelGiro = Giro::model()->find('GIR_ID = :id_uno',array(':id_uno'=>$modelGiroEmpresas->GIR_ID));
+		$modelRubro = Rubro::model()->find('RUB_ID = :id_uno',array(':id_uno'=>$modelGiro->RUB_ID));
+		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Empresa'], $_POST['Rubro'], $_POST['Giro'], $_POST['Region'], $_POST['Giro']))
+		if(isset($_POST['Empresa'], $_POST['Rubro'], $_POST['Giro'], $_POST['Region'], $_POST['Provincia']))
 		{
 			$model->attributes=$_POST['Empresa'];
-			if($model->save())
+			//$id = $_GET['id'];
+			//$model=Empresa::model()->findByPk($id);
+			$modelRubro->attributes=$_POST['Rubro'];
+			$modelGiro->attributes=$_POST['Giro'];
+			$modelReg->attributes=$_POST['Region'];
+			$modelProv->attributes=$_POST['Provincia'];
+
+			//$modelRubro->validate();
+			//$modelGiro->validate();
+			//$modelReg->validate();
+			//$modelProv->validate();
+
+			$validar = $modelRubro->validate();
+			$validar = $modelGiro->validate() && $validar;
+			$validar = $modelReg->validate() && $validar;
+			$validar = $modelProv->validate() && $validar;
+
+			if($validar && $model->save()){
+				$modelGiroEmpresas = new GiroEmpresas();
+				$modelGiroEmpresas = GiroEmpresas::model()->find('EMP_RUT = :id_uno',array(':id_uno'=>$model->EMP_RUT));
+				$modelGiroEmpresas->GIR_ID = $modelGiro->GIR_ID;
+				$model->save();
+				$modelGiroEmpresas->save(false);
 				$this->redirect(array('view','id'=>$model->EMP_RUT));
+
+			}
 		}
 
 		$this->render('update',array(
@@ -203,11 +261,6 @@ class EmpresaController extends Controller
 			Yii::app()->end();
 		}
 	}
-
-
-
-
-
 
 	public function actionselect_reg()
 	{

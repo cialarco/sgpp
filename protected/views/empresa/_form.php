@@ -213,11 +213,9 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 )); ?>
 	<p class="note">Campos con <span class="required">*</span> son Obligatorios.</p>
 
-	<?php //echo $form->errorSummary($model); ?>
-
 	<div class="row">
 		<?php echo $form->labelEx($model,'EMP_RUT'); ?>
-		<?php echo $form->textField($model,'EMP_RUT',array('size'=>12,'maxlength'=>12, 'placeholder'=>'Ej.: 18.107.501-5', 'onkeypress'=>"return permite(event, 'num')", 'onChange'=>"Rut(document.form1.Empresa_EMP_RUT.value)", 'onpaste'=>"return false;" , 'ondrop'=>"return false;")); ?>
+		<?php echo $form->textField($model,'EMP_RUT',array('size'=>12,'maxlength'=>12, 'placeholder'=>'Ej.: 78.129.870-0', 'onkeypress'=>"return permite(event, 'num')", 'onChange'=>"Rut(document.form1.Empresa_EMP_RUT.value)", 'onpaste'=>"return false;" , 'ondrop'=>"return false;")); ?>
 		<?php echo $form->error($model,'EMP_RUT'); ?>
 	</div>	
 
@@ -230,6 +228,8 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 	<div class="row">
 		<?php //$modelRubro = new Rubro();?>
 		<?php //$modelGiro = new Giro();?>
+		<?php //$modelReg = new Region();?>
+		<?php //$modelProv = new Provincia();?>
 		<?php echo $form->labelEx($modelRubro,'RUB_ID'); ?>
 		<?php echo $form->dropDownList($modelRubro,'RUB_ID',
 			CHtml::listData(Rubro::model()->findAll('RUB_PADRE >= 1'),'RUB_ID', 'RUB_NOMBRE'),
@@ -243,21 +243,29 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 				));
 			
 		?> 
-		<?php //echo CHtml::activeerror($modelPro,'PRO_ID');?>
+		<?php echo $form->error($modelRubro,'RUB_ID');?>
 	</div>
 
 	<div class="row">
 		
 		<?php echo $form->labelEx($modelGiro,'GIR_ID'); ?>
-		<?php echo $form->dropDownList($modelGiro,'GIR_ID', array('prompt'=>'Seleccione Giro...'));?> 
-		<?php //echo $form->dropDownList($model,'COM_ID', CHtml::listData(Comuna::model()->findAll('PRO_ID=? ',array($Provincia->PRO_ID)),'COM_ID', 'COM_NOMBRE'), array('prompt'=>'Seleccione Comuna...'));?> 
-		<?php //echo $form->error($model,'COM_ID'); ?>
+		<?php 
+			if(isset($modelRubro->RUB_ID)){
+				echo $form->dropDownList($modelGiro,'GIR_ID', 
+										CHtml::listData(
+											Giro::model()->findAll(
+											'RUB_ID = :id_uno',	array(':id_uno'=>$modelRubro->RUB_ID)),
+											'GIR_ID', 'GIR_NOMBRE'), 
+										array('prompt'=>'Seleccione Giro...'));
+			}
+			else{
+				echo $form->dropDownList($modelGiro,'GIR_ID', array(''=>'Seleccione Giro...'));		}
+		?> 
+		<?php echo $form->error($modelGiro,'GIR_ID');?>
 	</div>
 
 	
 	<div class="row">
-		<?php //$modelReg = new Region();?>
-		<?php //$modelProv = new Provincia();?>
 		<?php echo $form->labelEx($modelReg,'REG_ID'); ?>
 		<?php echo $form->dropDownList($modelReg,'REG_ID',
 			CHtml::listData(Region::model()->findAll(''),'REG_ID', 'REG_NOMBRE'),
@@ -271,11 +279,10 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 
 				));
 		?> 
-		<?php //echo CHtml::activeerror($modelReg,'REG_ID');?>
+		<?php echo $form->error($modelReg,'REG_ID');?>
 	</div>
 
-	<div class="row">
-		
+	<div class="row">		
 		<?php echo $form->labelEx($modelProv,'PRO_ID'); ?>
 		<?php
 			if(isset($modelReg->REG_ID)){
@@ -304,26 +311,13 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 																));
 			}
 		?>
-		<?php /*echo $form->dropDownList($modelProv,'PRO_ID',
-			CHtml::listData(Provincia::model()->findAll(''),'PRO_ID', 'PRO_NOMBRE'),
-			array(
-				'ajax'=>array(
-					'type'=>'POST',
-					'url'=>CController::createUrl('empresa/select_pro'),
-					'update'=>'#'.CHtml::activeId($model, 'COM_ID'),
-				),'prompt'=>'Seleccione Provincia...'
-
-				));*/
-			
-		?> 
-		<?php //echo CHtml::activeerror($modelPro,'PRO_ID');?>
+		<?php echo $form->error($modelProv,'PRO_ID');?>
 	</div>
 
 
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'COM_ID'); ?>
-		<?php //echo $form->dropDownList($model,'COM_ID', array('prompt'=>'Seleccione Comuna...'));?>
 		<?php
 			if(isset($modelProv->PRO_ID)){
 				echo $form->dropDownList($model,'COM_ID', CHtml::listData(Comuna::model()->findAll('PRO_ID = :id_uno',array(':id_uno'=>$modelProv->PRO_ID)),'COM_ID', 'COM_NOMBRE'), array('prompt'=>'Seleccione Comuna...'));
@@ -332,13 +326,12 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 				echo $form->dropDownList($model,'COM_ID', array('prompt'=>'Seleccione Comuna...'));
 			}
 		?>
-		<?php //echo $form->dropDownList($model,'COM_ID', CHtml::listData(Comuna::model()->findByAttributes('PRO_ID=? ',array($modelProv->PRO_ID)),'COM_ID', 'COM_NOMBRE'), array('prompt'=>'Seleccione Comuna...'));?> 
 		<?php echo $form->error($model,'COM_ID'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'EMP_DIRECCION'); ?>
-		<?php echo $form->textField($model,'EMP_DIRECCION',array('size'=>50,'maxlength'=>50)); ?>
+		<?php echo $form->textField($model,'EMP_DIRECCION',array('size'=>50,'maxlength'=>50, 'placeholder'=>'Ej: Av.Calle 1234')); ?>
 		<?php echo $form->error($model,'EMP_DIRECCION'); ?>
 	</div>
 
@@ -351,7 +344,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
  		'charMap' => array('1'=>'[0-9]'),
 
 		'mask' => '111-1111111',
-		'htmlOptions' => array('size' => 12)    ));?>
+		'htmlOptions' => array('size' => 12, 'placeholder'=>'Ej.: 041-2657639')    ));?>
 		<?php echo $form->error($model,'EMP_TELEFONO'); ?>
 	</div>
 
@@ -363,30 +356,30 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
  		'charMap' => array('1'=>'[0-9]'),
 
 		'mask' => '+56911111111',
-		'htmlOptions' => array('size' => 12)	));?>
+		'htmlOptions' => array('size' => 12, 'placeholder'=>'Ej.: +56981845762')	));?>
 		<?php echo $form->error($model,'EMP_CELULAR'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'EMP_DESCRIPCION'); ?>
-		<?php echo $form->textField($model,'EMP_DESCRIPCION',array('size'=>60,'maxlength'=>100)); ?>
+		<?php echo $form->textField($model,'EMP_DESCRIPCION',array('size'=>60,'maxlength'=>100, 'placeholder'=>'Ej.: Empresa de servicios Informáticos ó Fabrica de Dulces y Pasteles')); ?>
 		<?php echo $form->error($model,'EMP_DESCRIPCION'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'EMP_EMAIL'); ?>
-		<?php echo $form->textField($model,'EMP_EMAIL',array('size'=>30,'maxlength'=>30)); ?>
+		<?php echo $form->textField($model,'EMP_EMAIL',array('size'=>30,'maxlength'=>30, 'placeholder'=>'Ej.: info@empresa.com')); ?>
 		<?php echo $form->error($model,'EMP_EMAIL'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'EMP_WEB'); ?>
-		<?php echo $form->textField($model,'EMP_WEB',array('size'=>50,'maxlength'=>50)); ?>
+		<?php echo $form->textField($model,'EMP_WEB',array('size'=>50,'maxlength'=>50, 'placeholder'=>'Ej.: www.empresa.com')); ?>
 		<?php echo $form->error($model,'EMP_WEB'); ?>
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registar Empresa' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registar Empresa' : 'Actualizar'); ?>
 	</div>
 
 

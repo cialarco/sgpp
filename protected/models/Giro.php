@@ -31,7 +31,7 @@ class Giro extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('RUB_ID', 'required'),
+			array('GIR_ID', 'required', 'message'=>'Debe seleccionar un Giro'),
 			array('RUB_ID', 'numerical', 'integerOnly'=>true),
 			array('GIR_CODIGO', 'length', 'max'=>10),
 			array('GIR_NOMBRE', 'length', 'max'=>150),

@@ -30,7 +30,8 @@ class Provincia extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('PRO_ID, REG_ID, PRO_NOMBRE', 'required'),
+			array('PRO_ID', 'required', 'message'=>'Debe seleccionar una Provincia'),
+			array('REG_ID, PRO_NOMBRE', 'required'),
 			array('PRO_ID, REG_ID', 'numerical', 'integerOnly'=>true),
 			array('PRO_NOMBRE', 'length', 'max'=>30),
 			// The following rule is used by search().

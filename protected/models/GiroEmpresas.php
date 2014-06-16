@@ -1,24 +1,20 @@
 <?php
 
 /**
- * This is the model class for table "rubro".
+ * This is the model class for table "giro_empresas".
  *
- * The followings are the available columns in table 'rubro':
- * @property integer $RUB_ID
- * @property string $RUB_NOMBRE
- * @property integer $RUB_PADRE
- *
- * The followings are the available model relations:
- * @property Giro[] $giros
+ * The followings are the available columns in table 'giro_empresas':
+ * @property integer $GIR_ID
+ * @property string $EMP_RUT
  */
-class Rubro extends CActiveRecord
+class GiroEmpresas extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'rubro';
+		return 'giro_empresas';
 	}
 
 	/**
@@ -29,12 +25,12 @@ class Rubro extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('RUB_ID','required', 'message'=>'Debe seleccionar un Rubro'),
-			array('RUB_PADRE', 'numerical', 'integerOnly'=>true),
-			array('RUB_NOMBRE', 'length', 'max'=>150),
+			array('GIR_ID, EMP_RUT', 'required'),
+			array('GIR_ID', 'numerical', 'integerOnly'=>true),
+			array('EMP_RUT', 'length', 'max'=>13),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('RUB_ID, RUB_NOMBRE, RUB_PADRE', 'safe', 'on'=>'search'),
+			array('GIR_ID, EMP_RUT', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -46,7 +42,6 @@ class Rubro extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'giros' => array(self::HAS_MANY, 'Giro', 'RUB_ID'),
 		);
 	}
 
@@ -56,9 +51,8 @@ class Rubro extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'RUB_ID' => 'Rubro',
-			'RUB_NOMBRE' => 'Rub Nombre',
-			'RUB_PADRE' => 'Rub Padre',
+			'GIR_ID' => 'Gir',
+			'EMP_RUT' => 'Emp Rut',
 		);
 	}
 
@@ -80,9 +74,8 @@ class Rubro extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('RUB_ID',$this->RUB_ID);
-		$criteria->compare('RUB_NOMBRE',$this->RUB_NOMBRE,true);
-		$criteria->compare('RUB_PADRE',$this->RUB_PADRE);
+		$criteria->compare('GIR_ID',$this->GIR_ID);
+		$criteria->compare('EMP_RUT',$this->EMP_RUT,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -93,7 +86,7 @@ class Rubro extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Rubro the static model class
+	 * @return GiroEmpresas the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

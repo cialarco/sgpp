@@ -31,7 +31,8 @@ class Region extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('REG_ID, REG_NOMBRE, REG_SIMBOLO', 'required'),
+			array('REG_ID', 'required','message'=>'Debe seleccionar una Región'),
+			array('REG_NOMBRE, REG_SIMBOLO', 'required'),
 			array('REG_ID, PAIS_ID', 'numerical', 'integerOnly'=>true),
 			array('REG_NOMBRE', 'length', 'max'=>30),
 			array('REG_SIMBOLO', 'length', 'max'=>5),
